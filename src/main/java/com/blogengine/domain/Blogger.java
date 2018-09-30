@@ -11,6 +11,8 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.blogengine.validator.EmailValidator;
+
 @DynamicUpdate
 public class Blogger {
 	@Id
@@ -42,13 +44,16 @@ public class Blogger {
 		super();
 	}
 	
-	public Blogger(String lastName, String firstName, short age, String userName, String emailAddress, Date regDate) {
+	public Blogger(String lastName, String firstName, short age, String userName, String emailAddress, Date regDate) throws Exception {
 		super();
-		this.lastName = lastName;
-		this.firstName = firstName;
-		this.age = age;
-		this.userName = userName;
-		this.emailAddress = emailAddress;
+		
+		//Validálás setterekkel
+		this.setLastName(lastName);
+		this.setFirstName(firstName);
+		this.setAge(age);
+		this.setUserName(userName);
+		this.setEmailAddress(emailAddress);
+		
 		this.regDate = regDate;
 		this.blogPostCounter = 0;
 		this.blogposts = new ArrayList<BlogPost>();
@@ -103,7 +108,13 @@ public class Blogger {
 		if(emailAddress.isEmpty()) {
 			throw new IllegalArgumentException("Emailcím nem lehet üres!");
 		}
-		this.emailAddress = emailAddress;
+		
+		//Email validálás	
+		if(EmailValidator.getInstance().emailValidate(emailAddress)) {
+			this.emailAddress = emailAddress;	
+		} else {
+			throw new IllegalArgumentException("Rossz email formátum!");
+		}	
 	}
 	
 	public short getBlogPostCounter() {
