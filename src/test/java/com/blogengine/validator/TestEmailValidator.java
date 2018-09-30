@@ -1,6 +1,7 @@
 package com.blogengine.validator;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -15,38 +16,37 @@ public class TestEmailValidator {
 			"skkd.valami@gmail.com",
 			"klkld-valami@gmail.com",
 			"klkld-valami@hunmail.com",
-			"klkld-valami@gmail.hu"	
+			"klkld-valami@gmail.hu",
+			"disposable.style.email.withsymbol@example.com",
+			"other.email-with-hyphen@example.com"
 	};
 	
 	private String[] invalid = new String[] {
 			"klkld-valami@gmail",
 			"klkld-valami-gmail.hu",
 			"klkld-valami-gmail.",
-			"klkld-valami@gmail."
+			"klkld-valami@gmail.",
+			"A@b@c@example.com",
+			"just\"not\"right@example.com",
+			"this is\"not\\allowed@example.com",
+			"john..doe@example.com"
 	};
 	
 	
 	@Test
 	public void validEmailTest() {
-		boolean val = true;
-		
+		// Valid emailek tömbjéből fogja letesztelgetni az emailcímeket, és mindegyiknek meg kell felelnie!		
 		for(String email: valid) {
-			val = val && validator.emailValidate(email);
-		}
-		
-		assertEquals(true,val);
+			assertTrue(validator.emailValidate(email));
+		}		
 	}
 	
 	@Test
 	public void invalidEmailTest() {
-		boolean val = true;
-		
+		// Invalid emailek tömbjéből fogja letesztelgetni az emailcímeket, és mindegyiknek el kell buknia!
 		for(String email: invalid) {
-			val = val && validator.emailValidate(email);
+			assertFalse(validator.emailValidate(email));
 		}
-		
-		assertEquals(false,val);
-		
 	}
 	
 }
