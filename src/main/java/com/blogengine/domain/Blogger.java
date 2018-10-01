@@ -1,55 +1,67 @@
 package com.blogengine.domain;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.DynamicUpdate;
+import com.blogengine.validator.EmailValidator;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
-@DynamicUpdate
+@Entity
 public class Blogger {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int ID;
+	private Long ID;
 	
+	@Column(length=50)
 	private String lastName;
+	
+	@Column(length=50)
 	private String firstName;
+	
 	private short age;
 	
+	@Column(length=50)
 	private String userName;
 	
+	@Column(length=50)
 	private String emailAddress;
 	
 	private short blogPostCounter;
 	
-	private Date regDate;
-	private Date lastActivity;
+	private String regDate;
+	private String lastActivityDate;
 	
-	@OneToMany(mappedBy = "blogger")
+	@JsonBackReference
+	@OneToMany(mappedBy = "author")
 	private List<BlogPost> blogposts;
 	
-	@OneToMany(mappedBy = "blogger")
+	@JsonBackReference
+	@OneToMany(mappedBy = "author")
 	private List<Comment> comments; 
 	
-	@SuppressWarnings("unused")
-	public Blogger() {
-		// for hibernate
-		super();
-	}
+	protected Blogger() { /* empty for hibernate */ }
 	
-	public Blogger(String lastName, String firstName, short age, String userName, String emailAddress, Date regDate) {
+	public Blogger(String lastName, String firstName, short age, String userName, String emailAddress) throws Exception {
 		super();
-		this.lastName = lastName;
-		this.firstName = firstName;
-		this.age = age;
-		this.userName = userName;
-		this.emailAddress = emailAddress;
-		this.regDate = regDate;
+		
+		//Validálás setterekkel
+		this.setLastName(lastName);
+		this.setFirstName(firstName);
+		this.setAge(age);
+		this.setUserName(userName);
+		this.setEmailAddress(emailAddress);
+		
+		this.regDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		this.lastActivityDate = regDate;
 		this.blogPostCounter = 0;
 		this.blogposts = new ArrayList<BlogPost>();
 		this.comments = new ArrayList<Comment>();
@@ -103,51 +115,104 @@ public class Blogger {
 		if(emailAddress.isEmpty()) {
 			throw new IllegalArgumentException("Emailcím nem lehet üres!");
 		}
-		this.emailAddress = emailAddress;
+		
+		//Email validálás	
+		if(EmailValidator.getInstance().emailValidate(emailAddress)) {
+			this.emailAddress = emailAddress;	
+		} else {
+			throw new IllegalArgumentException("Rossz email formátum!");
+		}	
 	}
 	
 	public short getBlogPostCounter() {
 		return blogPostCounter;
 	}
 	public void setBlogPostCounter(short blogPostCounter) {
-		if(blogPostCounter < 0) {
-			throw new IllegalArgumentException("Hibás blogpostCounter!");
-		}
 		this.blogPostCounter = blogPostCounter;
 	}
 	
-	public Date getRegDate() {
+	public String getRegDate() {
 		return regDate;
 	}
-	public void setRegDate(Date regDate) {
+	public void setRegDate(String regDate) {
 		this.regDate = regDate;
 	}
 	
-	public Date getLastActivity() {
-		return lastActivity;
+	public String getLastActivityDate() {
+		return lastActivityDate;
 	}
-	public void setLastActivity(Date lastActivity) {
-		this.lastActivity = lastActivity;
+	public void setLastActivityDate(String lastActivity) {
+		this.lastActivityDate = lastActivity;
 	}
 
-	public int getID() {
+	public Long getID() {
 		return ID;
 	}
-	public void setID(int iD) {
+	public void setID(Long iD) {
 		ID = iD;
 	}
-	
-	public List<BlogPost> getBlogpost() {
+
+	public List<BlogPost> getBlogposts() {
 		return blogposts;
 	}
-	public void setBlogpost(List<BlogPost> blogpost) {
-		this.blogposts = blogpost;
-	}
 
+	public void setBlogposts(List<BlogPost> blogposts) {
+		this.blogposts = blogposts;
+	}
+	
 	public List<Comment> getComments() {
 		return comments;
 	}
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
 	}
+	
+	public void addBlogPost(String title, String content) throws Exception {
+		blogposts.add(new BlogPost(this,title,content));
+		blogPostCounter++;
+	}
+
+	@Override
+	public String toString() {
+//		return "Blogger [lastName=" + lastName + ", firstName=" + firstName + ", age=" + age + ", userName=" + userName
+//				+ ", emailAddress=" + emailAddress + ", blogPostCounter=" + blogPostCounter + ", regDate=" + regDate
+//				+ ", lastActivity=" + lastActivityDate + "]";
+		return String.format(""
+				+ "%1$s blogger adatai\n"
+				+ "név: %2$s %3$s%n"
+				+ "kor: %4$s%n"
+				+ "email cím: %5$s%n"
+				+ "posztok száma: %6$d%n"
+				+ "regisztráció dátuma: %7$s%n"
+				+ "utoljára aktív: %8$s%n", userName,lastName,firstName,age,emailAddress,blogPostCounter,regDate,lastActivityDate);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((emailAddress == null) ? 0 : emailAddress.hashCode());
+		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Blogger other = (Blogger) obj;
+
+		if(emailAddress.equals(other.getEmailAddress())) {
+			return true;
+		}
+		if(userName.equals(other.getUserName())) {
+			return true;
+		}
+		return false;
+	}	
+	
 }

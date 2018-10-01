@@ -1,5 +1,79 @@
 package com.blogengine.domain;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Comment {
 
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Id
+	private Long ID;
+	
+	@ManyToOne
+	private Blogger author;
+	
+	@ManyToOne
+	private BlogPost blog;
+	
+	@Column(length=1000)
+	private String content;
+	
+	@Column(length=10)
+	private String date;
+	
+	protected Comment() { /* empty for hibernate */ }
+	
+	public Comment(Blogger author, BlogPost blog, String content) throws Exception {
+		this.author = author;
+		this.blog = blog;
+		this.setContent(content);
+		date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+	}
+	
+	public Long getID() {
+		return ID;
+	}
+
+	public void setID(Long iD) {
+		ID = iD;
+	}
+
+	public Blogger getAuthor() {
+		return author;
+	}
+	public void setAuthor(Blogger author) {
+		this.author = author;
+	}
+	
+	public BlogPost getBlog() {
+		return blog;
+	}
+	public void setBlog(BlogPost blog) {
+		this.blog = blog;
+	}
+	
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) throws Exception{
+		if(content.isEmpty()) {
+			throw new IllegalArgumentException("Nem lehet üres a comment!");
+		}
+		this.content = content;
+	}
+	
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
 }
