@@ -9,18 +9,18 @@ public class TestBlogger {
 	private Blogger bl = new Blogger();
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void testSetLastNameException() throws Exception {
+	public void testSetLastNameWithException() throws Exception {
 		bl.setLastName("");
 	}
 	
 	@Test
 	public void testSetLastName() throws Exception {
 		bl.setLastName("Pacsma");
-		assertEquals("Pacsma", bl.getLastName());
+		assertEquals("LastNameSetter ellenőrzés","Pacsma", bl.getLastName());
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void testSetAgeException() throws Exception {
+	public void testSetAgeWithException() throws Exception {
 		bl.setAge((short) 2);
 	}
 	
@@ -31,7 +31,7 @@ public class TestBlogger {
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void testSetEmailException() {
+	public void testSetEmailWithException() {
 		bl.setEmailAddress("valami@gmail.");
 	}
 	
