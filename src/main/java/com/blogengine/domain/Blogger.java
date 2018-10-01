@@ -1,7 +1,8 @@
 package com.blogengine.domain;
 
+import java.time.LocalDateTime;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.GeneratedValue;
@@ -29,22 +30,18 @@ public class Blogger {
 	
 	private short blogPostCounter;
 	
-	private Date regDate;
-	private Date lastActivity;
+	private LocalDateTime regDate;
+	private LocalDateTime lastActivity;
 	
-	@OneToMany(mappedBy = "blogger")
+	@OneToMany(mappedBy = "author")
 	private List<BlogPost> blogposts;
 	
-	@OneToMany(mappedBy = "blogger")
+	@OneToMany(mappedBy = "author")
 	private List<Comment> comments; 
 	
-	@SuppressWarnings("unused")
-	public Blogger() {
-		// for hibernate
-		super();
-	}
+	public Blogger() { /* empty for hibernate */	}
 	
-	public Blogger(String lastName, String firstName, short age, String userName, String emailAddress, Date regDate) throws Exception {
+	public Blogger(String lastName, String firstName, short age, String userName, String emailAddress) throws Exception {
 		super();
 		
 		//Validálás setterekkel
@@ -54,7 +51,7 @@ public class Blogger {
 		this.setUserName(userName);
 		this.setEmailAddress(emailAddress);
 		
-		this.regDate = regDate;
+		this.regDate = LocalDateTime.now();
 		this.blogPostCounter = 0;
 		this.blogposts = new ArrayList<BlogPost>();
 		this.comments = new ArrayList<Comment>();
@@ -127,17 +124,17 @@ public class Blogger {
 		this.blogPostCounter = blogPostCounter;
 	}
 	
-	public Date getRegDate() {
+	public LocalDateTime getRegDate() {
 		return regDate;
 	}
-	public void setRegDate(Date regDate) {
+	public void setRegDate(LocalDateTime regDate) {
 		this.regDate = regDate;
 	}
 	
-	public Date getLastActivity() {
+	public LocalDateTime getLastActivity() {
 		return lastActivity;
 	}
-	public void setLastActivity(Date lastActivity) {
+	public void setLastActivity(LocalDateTime lastActivity) {
 		this.lastActivity = lastActivity;
 	}
 
@@ -147,18 +144,23 @@ public class Blogger {
 	public void setID(int iD) {
 		ID = iD;
 	}
-	
-	public List<BlogPost> getBlogpost() {
+
+	public List<BlogPost> getBlogposts() {
 		return blogposts;
 	}
-	public void setBlogpost(List<BlogPost> blogpost) {
-		this.blogposts = blogpost;
-	}
 
+	public void setBlogposts(List<BlogPost> blogposts) {
+		this.blogposts = blogposts;
+	}
+	
 	public List<Comment> getComments() {
 		return comments;
 	}
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
+	}
+	
+	public void addBlogPost(String title, String content) throws Exception {
+		blogposts.add(new BlogPost(this,title,content));
 	}
 }
