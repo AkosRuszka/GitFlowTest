@@ -1,45 +1,54 @@
 package com.blogengine.domain;
 
 import java.time.LocalDateTime;
-
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.DynamicUpdate;
-
 import com.blogengine.validator.EmailValidator;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
-@DynamicUpdate
+@Entity
 public class Blogger {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int ID;
+	private Long ID;
 	
+	@Column(length=50)
 	private String lastName;
+	
+	@Column(length=50)
 	private String firstName;
+	
 	private short age;
 	
+	@Column(length=50)
 	private String userName;
 	
+	@Column(length=50)
 	private String emailAddress;
 	
 	private short blogPostCounter;
 	
-	private LocalDateTime regDate;
-	private LocalDateTime lastActivity;
+	private String regDate;
+	private String lastActivityDate;
 	
+	@JsonBackReference
 	@OneToMany(mappedBy = "author")
 	private List<BlogPost> blogposts;
 	
+	@JsonBackReference
 	@OneToMany(mappedBy = "author")
 	private List<Comment> comments; 
 	
-	public Blogger() { /* empty for hibernate */	}
+	protected Blogger() { /* empty for hibernate */ }
 	
 	public Blogger(String lastName, String firstName, short age, String userName, String emailAddress) throws Exception {
 		super();
@@ -51,7 +60,8 @@ public class Blogger {
 		this.setUserName(userName);
 		this.setEmailAddress(emailAddress);
 		
-		this.regDate = LocalDateTime.now();
+		this.regDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		this.lastActivityDate = regDate;
 		this.blogPostCounter = 0;
 		this.blogposts = new ArrayList<BlogPost>();
 		this.comments = new ArrayList<Comment>();
@@ -118,30 +128,27 @@ public class Blogger {
 		return blogPostCounter;
 	}
 	public void setBlogPostCounter(short blogPostCounter) {
-		if(blogPostCounter < 0) {
-			throw new IllegalArgumentException("Hibás blogpostCounter!");
-		}
 		this.blogPostCounter = blogPostCounter;
 	}
 	
-	public LocalDateTime getRegDate() {
+	public String getRegDate() {
 		return regDate;
 	}
-	public void setRegDate(LocalDateTime regDate) {
+	public void setRegDate(String regDate) {
 		this.regDate = regDate;
 	}
 	
-	public LocalDateTime getLastActivity() {
-		return lastActivity;
+	public String getLastActivityDate() {
+		return lastActivityDate;
 	}
-	public void setLastActivity(LocalDateTime lastActivity) {
-		this.lastActivity = lastActivity;
+	public void setLastActivityDate(String lastActivity) {
+		this.lastActivityDate = lastActivity;
 	}
 
-	public int getID() {
+	public Long getID() {
 		return ID;
 	}
-	public void setID(int iD) {
+	public void setID(Long iD) {
 		ID = iD;
 	}
 
@@ -162,5 +169,50 @@ public class Blogger {
 	
 	public void addBlogPost(String title, String content) throws Exception {
 		blogposts.add(new BlogPost(this,title,content));
+		blogPostCounter++;
 	}
+
+	@Override
+	public String toString() {
+//		return "Blogger [lastName=" + lastName + ", firstName=" + firstName + ", age=" + age + ", userName=" + userName
+//				+ ", emailAddress=" + emailAddress + ", blogPostCounter=" + blogPostCounter + ", regDate=" + regDate
+//				+ ", lastActivity=" + lastActivityDate + "]";
+		return String.format(""
+				+ "%1$s blogger adatai\n"
+				+ "név: %2$s %3$s%n"
+				+ "kor: %4$s%n"
+				+ "email cím: %5$s%n"
+				+ "posztok száma: %6$d%n"
+				+ "regisztráció dátuma: %7$s%n"
+				+ "utoljára aktív: %8$s%n", userName,lastName,firstName,age,emailAddress,blogPostCounter,regDate,lastActivityDate);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((emailAddress == null) ? 0 : emailAddress.hashCode());
+		result = prime * result + ((userName == null) ? 0 : userName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Blogger other = (Blogger) obj;
+
+		if(emailAddress.equals(other.getEmailAddress())) {
+			return true;
+		}
+		if(userName.equals(other.getUserName())) {
+			return true;
+		}
+		return false;
+	}	
+	
 }

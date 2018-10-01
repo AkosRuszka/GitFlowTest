@@ -1,51 +1,56 @@
 package com.blogengine.domain;
 
 import java.time.LocalDateTime;
-
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import org.hibernate.annotations.DynamicUpdate;
-
-@DynamicUpdate
+@Entity
 public class BlogPost {
 	
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Id
-	private Long id;
+	private Long ID;
 	
 	@ManyToOne
 	private Blogger author;
 	
+	@Column(length=50)
 	private String title;
+	
+	@Column(columnDefinition="TEXT")
 	private String content;
-	private LocalDateTime posted; 
+	
+	@Column(length=10)
+	private String postedDate; 
 	
 	@OneToMany(mappedBy="blog")
 	private List<Comment> comments;
 	
-	public BlogPost() { /* empty for hibernate */ }
+	protected BlogPost() { /* empty for hibernate */ }
 	
 	public BlogPost(Blogger author, String title, String content) throws Exception {
 		this.author = author;
 		this.setTitle(title);
 		this.setContent(content);
-		this.posted = LocalDateTime.now();
+		this.postedDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 		comments = new ArrayList<Comment>();
 	}
 	
 	public Long getId() {
-		return id;
+		return ID;
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.ID = id;
 	}
 
 	public Blogger getAuthor() {
@@ -59,7 +64,7 @@ public class BlogPost {
 	public String getTitle() {
 		return title;
 	}
-	public void setTitle(String title) {
+	public void setTitle(String title) throws Exception{
 		if(title.isEmpty()) {
 			throw new IllegalArgumentException("Nem lehet üres a cím!");
 		}
@@ -77,12 +82,12 @@ public class BlogPost {
 		this.content = content;
 	}
 
-	public LocalDateTime getDate() {
-		return posted;
+	public String getPostedDate() {
+		return postedDate;
 	}
 
-	public void setDate(LocalDateTime date) {
-		this.posted = date;
+	public void setPostedDate(String date) {
+		this.postedDate = date;
 	}
 
 	public List<Comment> getComments() {
@@ -96,5 +101,4 @@ public class BlogPost {
 	public void addComment(Comment comment) {
 		comments.add(comment);
 	}
-	
 }

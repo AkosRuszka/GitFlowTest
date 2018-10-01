@@ -1,20 +1,21 @@
 package com.blogengine.domain;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import org.hibernate.annotations.DynamicUpdate;
-
-@DynamicUpdate
+@Entity
 public class Comment {
 
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Id
-	private Long id;
+	private Long ID;
 	
 	@ManyToOne
 	private Blogger author;
@@ -22,25 +23,29 @@ public class Comment {
 	@ManyToOne
 	private BlogPost blog;
 	
+	@Column(length=1000)
 	private String content;
-	private LocalDateTime date;
 	
-	public Comment() { /* empty for hibernate */ }
+	@Column(length=10)
+	private String date;
+	
+	protected Comment() { /* empty for hibernate */ }
 	
 	public Comment(Blogger author, BlogPost blog, String content) throws Exception {
 		this.author = author;
 		this.blog = blog;
 		this.setContent(content);
-		date = LocalDateTime.now();
+		date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 	}
 	
-	public Long getId() {
-		return id;
+	public Long getID() {
+		return ID;
 	}
-	public void setId(Long id) {
-		this.id = id;
+
+	public void setID(Long iD) {
+		ID = iD;
 	}
-	
+
 	public Blogger getAuthor() {
 		return author;
 	}
@@ -65,10 +70,10 @@ public class Comment {
 		this.content = content;
 	}
 	
-	public LocalDateTime getDate() {
+	public String getDate() {
 		return date;
 	}
-	public void setDate(LocalDateTime date) {
+	public void setDate(String date) {
 		this.date = date;
 	}
 }
