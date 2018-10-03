@@ -1,0 +1,81 @@
+{
+	"test1":{
+		"email":"user@domain.com",
+		"expected":true
+	},
+	
+	"test2":{
+		"email":"valami_sanyu@gmail.com",
+		"expected":true
+	},
+	
+	"test3":{
+		"email":"skkd.valami@gmail.com",
+		"expected":true
+	},
+
+	"test4":{
+		"email":"klkld-valami@gmail.com",
+		"expected":true
+	},
+	
+	"test5":{
+		"email":"klkld-valami@hunmail.com",
+		"expected":true
+	},
+	
+	"test6":{
+		"email":"klkld-valami@gmail.hu",
+		"expected":true
+	},
+	
+	"test7":{
+		"email":"disposable.style.email.withsymbol@example.com",
+		"expected":true
+	},
+	
+	"test8":{
+		"email":"other.email-with-hyphen@example.com",
+		"expected":true
+	},
+	
+	"test9":{
+		"email":"klkld-valami@gmail",
+		"expected":false
+	},
+	
+	"test10":{
+		"email":"klkld-valami-gmail.hu",
+		"expected":false
+	},
+		
+	"test11":{
+		"email":"klkld-valami-gmail.",
+		"expected":false
+	},
+	
+	"test12":{
+		"email":"klkld-valami@gmail.",
+		"expected":false
+	},
+	
+	"test13":{
+		"email":"A@b@c@example.com",
+		"expected":false
+	},
+	
+	"test14":{
+		"email":"just\"not\"right@example.com",
+		"expected":false
+	},
+	
+	"test15":{
+		"email":"this is\"not\\allowed@example.com",
+		"expected":false
+	},
+	
+	"test16":{
+		"email":"john..doe@example.com",
+		"expected":false
+	}
+}
