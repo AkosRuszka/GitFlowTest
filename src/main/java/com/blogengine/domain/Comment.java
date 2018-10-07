@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Comment {
 
@@ -20,6 +22,7 @@ public class Comment {
 	@ManyToOne
 	private Blogger author;
 	
+	@JsonBackReference
 	@ManyToOne
 	private BlogPost blog;
 	

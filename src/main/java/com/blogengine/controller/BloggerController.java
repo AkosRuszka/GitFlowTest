@@ -27,12 +27,12 @@ public class BloggerController {
 	
 	@RequestMapping("/blogger-email/{email}")
 	public Blogger bloggerListWithEmail(@PathVariable("email")String email) {
-		return bs.findBloggerWithEmail(email).get();
+		return bs.findBloggerWithEmail(email);
 	}	
 	
 	@RequestMapping("/blogger-name/{username}")
 	public Blogger bloggerListWithUserName(@PathVariable("username")String username) {
-		return bs.findBloggerWithUserName(username).get();
+		return bs.findBloggerWithUserName(username);
 	}
 	
 	

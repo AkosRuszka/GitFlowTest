@@ -36,8 +36,7 @@ public class BlogPostController {
 			params="title",
 			method=RequestMethod.GET)
 	public BlogPost getByTitle(@RequestParam("title")String title) {
-		/* Lekezelés!!!! */
-		return bps.findBlogPostByTitle(title).get();
+		return bps.findBlogPostByTitle(title);
 	}
 	
 	@RequestMapping(
@@ -54,6 +53,14 @@ public class BlogPostController {
 			return bps.findBlogPostsByPostedDateASC(date);
 		}
 		return bps.findBlogPostsByPostedDateDESC(date);
+	}
+	
+	@RequestMapping(
+			value="/blogpost",
+			params="id",
+			method=RequestMethod.GET)
+	public BlogPost getById(@RequestParam("id")Long id) {
+		return bps.findBlogPostsById(id);
 	}
 	
 }

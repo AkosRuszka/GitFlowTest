@@ -10,6 +10,9 @@ Az alap koncepció egy webservice fejlesztése, amely egy blogmotor feladatát l
 
 * [Spring](https://spring.io/) - Framework
 * [Maven](https://maven.apache.org/) - Dependency Management
+* [JUnit](https://junit.org/junit5/) - Unit testing framework
+* [Mockito](https://site.mockito.org/) - Mocking framework
+* [JaCoCo](https://www.eclemma.org/jacoco/) - Java Code Coverage Library
 
 ## Verziózás
 

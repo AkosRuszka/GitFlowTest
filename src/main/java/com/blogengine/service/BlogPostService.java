@@ -20,26 +20,30 @@ public class BlogPostService {
 	}
 	
 	public List<BlogPost> getBlogPosts() {
-		/* null kezelés kell */
 		return bpr.findAll();
 	}
 	
-	public Optional<BlogPost> findBlogPostByTitle(String title) {
-		/* null kezelés kell */
-		return bpr.findFirst1ByTitle(title);
+	public BlogPost findBlogPostByTitle(String title) {
+		return bpr.findFirst1ByTitle(title)
+				.filter(blogpost -> blogpost.getTitle().equals((String)title))
+				.orElse(null);
 	}
 	
 	public List<BlogPost> findBlogPostsByPostedDateASC(String date) {
-		/* null kezelés kell */
 		return bpr.findByPostedDateOrderByPostedDateAsc(date);
 	}
 	
 	public List<BlogPost> findBlogPostsByPostedDateDESC(String date) {
-		/* null kezelés kell */
 		return bpr.findByPostedDateOrderByPostedDateDesc(date);
 	}
 	
 	public List<BlogPost> findBlogPostsByPostedDateDef(String date) {
 		return bpr.findByPostedDate(date);
+	}
+	
+	public BlogPost findBlogPostsById(Long id) {
+		return bpr.findById(id)
+				.filter(blogpost -> blogpost.getId().equals(id))
+				.orElse(null);
 	}
 }

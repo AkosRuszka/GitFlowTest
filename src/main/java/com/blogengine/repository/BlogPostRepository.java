@@ -46,4 +46,10 @@ public interface BlogPostRepository extends CrudRepository<BlogPost, Long> {
 	 * */
 	public List<BlogPost> findByPostedDate(String posteddate);
 	
+	/** 
+	 * BlogPost-ok ID szerinti keresése
+	 * Az ID egyedi kulcs, így a visszatérési érték mindenféleképpen egy BlogPost
+	 * (vagy null)
+	 * */	
+	public Optional<BlogPost> findById(Long id);
 }
