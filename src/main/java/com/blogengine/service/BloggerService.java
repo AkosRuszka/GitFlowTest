@@ -1,7 +1,6 @@
 package com.blogengine.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,19 +22,38 @@ public class BloggerService {
 		return br.findAll();
 	}
 	
-	public Optional<Blogger> findBloggerWithId(Long id) {
-		/* Lekezelendő!!! */
-		return br.findById(id);
+	public Blogger findBloggerWithId(Long id) {
+
+		/* 
+		 * Ellenőrzi a Service hogy a visszakapott Bloggernek
+		 * az ID-ja megfelel e a paraméterben kapott id-val.
+		 * Ha megfelel visszaadja a Bloggert, ha nem felel meg akkor null-t ad vissza.
+		 *  */
+		return br.findById(id)
+				.filter(blogger -> blogger.getID() == id)
+				.orElse(null);		
 	}
 	
-	public Optional<Blogger> findBloggerWithEmail(String email) {
-		/* Lekezelendő!!! */
-		return br.findFirst1ByEmailAddress(email);
+	public Blogger findBloggerWithEmail(String email) {
+		
+		/*
+		 * A visszakapott Blogger-t ellenőrizzük filterrel, ha nem megy át a megfelelési teszten
+		 * akkor a visszaadott érték egy null
+		 * */
+		return br.findFirst1ByEmailAddress(email)
+				.filter(blogger -> blogger.getEmailAddress().equals((String)email))
+				.orElse(null);
 	}
 	
-	public Optional<Blogger> findBloggerWithUserName(String username) {
-		/* Lekezelendő */
-		return br.findFirst1ByUserName(username);
+	public Blogger findBloggerWithUserName(String username) {
+		
+		/*
+		 * A blogger-t teszteljük a felhasználónevével is, ha ez megfelel akkor visszaadjuk azt
+		 * ha nem felel meg akkor null-t adunk vissza.
+		 *  */
+		return br.findFirst1ByUserName(username)
+				.filter(blogger -> blogger.getUserName().equals((String)username))
+				.orElse(null);
 	}
 	
 }
