@@ -42,4 +42,8 @@ public class BlogPostService {
 	public List<BlogPost> findBlogPostsByPostedDateDef(String date) {
 		return bpr.findByPostedDate(date);
 	}
+	
+	public Optional<BlogPost> findBlogPostsById(Long id) {
+		return bpr.findById(id);
+	}
 }

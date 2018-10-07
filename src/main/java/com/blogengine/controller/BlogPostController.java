@@ -56,4 +56,12 @@ public class BlogPostController {
 		return bps.findBlogPostsByPostedDateDESC(date);
 	}
 	
+	@RequestMapping(
+			value="/blogpost",
+			params="id",
+			method=RequestMethod.GET)
+	public BlogPost getById(@RequestParam("id")Long id) {
+		return bps.findBlogPostsById(id).get();
+	}
+	
 }
