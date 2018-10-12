@@ -79,7 +79,7 @@ public class TestBlogger {
 		assertEquals(true,test1.equals(test1));
 		
 		// Más osztálybeli objektumot hasonlítunk össze
-		assertEquals(false,test1.equals(new Integer(10)));
+		assertEquals(false,test1.equals((int)10));
 		
 		// Egyenlő email & nem egyenlő név
 		String oldemail = test1.getEmailAddress();
