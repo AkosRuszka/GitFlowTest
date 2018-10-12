@@ -43,7 +43,7 @@ public class TestBloggerController {
 
 		mvc.perform(get(URL).contentType(MediaType.APPLICATION_JSON))
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$[0].userName", equalTo("sanyi")));	
+		.andExpect(jsonPath("$[0].userName", equalTo("TestUserName")));	
 		
 	}
 
