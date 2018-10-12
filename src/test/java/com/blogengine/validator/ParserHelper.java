@@ -14,7 +14,7 @@ public class ParserHelper {
 	@SuppressWarnings("rawtypes")
 	public static Collection data() {
 		
-		var resultData = new ArrayList<Object[]>();
+		ArrayList<Object[]> resultData = new ArrayList<>();
 		
 		ClassLoader cl = ParserHelper.class.getClassLoader();
 	
