@@ -1,4 +1,4 @@
-package com.blogengine.domain;
+package com.blogengine.blogger;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.blogengine.blogpost.BlogPost;
+import com.blogengine.comment.Comment;
 import com.blogengine.validator.EmailValidator;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -48,9 +50,9 @@ public class Blogger {
 	@OneToMany(mappedBy = "author")
 	private List<Comment> comments; 
 	
-	protected Blogger() { /* empty for hibernate */ }
+	public Blogger() { /* empty for hibernate */ }
 	
-	public Blogger(String lastName, String firstName, short age, String userName, String emailAddress) throws Exception {
+	public Blogger(String lastName, String firstName, short age, String userName, String emailAddress) throws IllegalArgumentException {
 		super();
 		
 		//Validálás setterekkel
@@ -70,7 +72,7 @@ public class Blogger {
 	public String getLastName() {
 		return lastName;
 	}	
-	public void setLastName(String lastName) throws Exception{
+	public void setLastName(String lastName) throws IllegalArgumentException{
 		if(lastName.isEmpty()) {
 			throw new IllegalArgumentException("Vezetéknév nem lehet üres!");	
 		}
@@ -80,7 +82,7 @@ public class Blogger {
 	public String getFirstName() {
 		return firstName;
 	}
-	public void setFirstName(String firstName) throws Exception{
+	public void setFirstName(String firstName) throws IllegalArgumentException{
 		if(firstName.isEmpty()) {
 			throw new IllegalArgumentException("Keresztnév nem lehet üres!");
 		}
@@ -90,7 +92,7 @@ public class Blogger {
 	public short getAge() {
 		return age;
 	}
-	public void setAge(short age) throws Exception{
+	public void setAge(short age) throws IllegalArgumentException{
 		//Kor validálás
 		if(age < 10 || age > 100) {
 			throw new IllegalArgumentException("Tiltott kor!");
@@ -101,7 +103,7 @@ public class Blogger {
 	public String getUserName() {
 		return userName;
 	}
-	public void setUserName(String userName) {
+	public void setUserName(String userName) throws IllegalArgumentException{
 		if(userName.isEmpty()) {
 			throw new IllegalArgumentException("Username nem lehet üres!");
 		}
@@ -111,7 +113,7 @@ public class Blogger {
 	public String getEmailAddress() {
 		return emailAddress;
 	}
-	public void setEmailAddress(String emailAddress) {
+	public void setEmailAddress(String emailAddress) throws IllegalArgumentException{
 		if(emailAddress.isEmpty()) {
 			throw new IllegalArgumentException("Emailcím nem lehet üres!");
 		}
@@ -167,7 +169,7 @@ public class Blogger {
 		this.comments = comments;
 	}
 	
-	public void addBlogPost(String title, String content) throws Exception {
+	public void addBlogPost(String title, String content) throws IllegalArgumentException {
 		blogposts.add(new BlogPost(this,title,content));
 		blogPostCounter++;
 	}

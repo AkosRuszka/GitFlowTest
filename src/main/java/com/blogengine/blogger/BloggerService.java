@@ -1,12 +1,10 @@
-package com.blogengine.service;
+package com.blogengine.blogger;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.blogengine.domain.Blogger;
-import com.blogengine.repository.BloggerRepository;
 
 @Service
 public class BloggerService {
@@ -54,6 +52,24 @@ public class BloggerService {
 		return br.findFirst1ByUserName(username)
 				.filter(blogger -> blogger.getUserName().equals((String)username))
 				.orElse(null);
+	}
+
+	public Blogger addBlogger(String lastName, String firstName, 
+			short age, String userName, String emailAddress) throws IllegalArgumentException{
+
+		Blogger bl = new Blogger(lastName, firstName, age, userName, emailAddress);
+		
+		br.save(bl);
+		
+		return bl;		
+	}
+	
+	public void deleteById(Long id) {			
+		br.deleteById(id);
+	}
+	
+	public Blogger save(Blogger bl) {
+		return br.save(bl);
 	}
 	
 }

@@ -1,13 +1,10 @@
-package com.blogengine.repository;
+package com.blogengine.blogger;
 
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-
-import com.blogengine.domain.Blogger;
 
 @Repository
 public interface BloggerRepository extends CrudRepository<Blogger, Long> {
@@ -31,4 +28,5 @@ public interface BloggerRepository extends CrudRepository<Blogger, Long> {
 	 * Ha nem talál ilyet, akkor null értékű objektumot fog visszaadni.
 	 * */
 	public Optional<Blogger> findFirst1ByUserName(String username);
+	
 }

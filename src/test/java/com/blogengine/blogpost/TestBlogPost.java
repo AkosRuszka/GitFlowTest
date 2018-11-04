@@ -1,4 +1,4 @@
-package com.blogengine.domain;
+package com.blogengine.blogpost;
 
 import static org.junit.Assert.assertEquals;
 
@@ -6,6 +6,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.junit.Test;
+
+import com.blogengine.blogger.Blogger;
+import com.blogengine.blogpost.BlogPost;
 
 public class TestBlogPost {
 	BlogPost bp = new BlogPost();

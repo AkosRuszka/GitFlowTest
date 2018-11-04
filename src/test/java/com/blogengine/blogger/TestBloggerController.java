@@ -1,4 +1,4 @@
-package com.blogengine.controller;
+package com.blogengine.blogger;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.mockito.Mockito.when;
@@ -18,8 +18,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.blogengine.domain.Blogger;
-import com.blogengine.service.BloggerService;
+import com.blogengine.blogger.Blogger;
+import com.blogengine.blogger.BloggerController;
+import com.blogengine.blogger.BloggerService;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(BloggerController.class)
@@ -33,7 +34,7 @@ public class TestBloggerController {
 	
 	@Test
 	public void testBloggerList() throws Exception {
-		String URL = "/bloggers";
+		String URL = "/api/bloggers";
 		
 		Blogger blogger = new Blogger("Test","Test",(short)20,"TestUserName","valami@gmail.com");
 		

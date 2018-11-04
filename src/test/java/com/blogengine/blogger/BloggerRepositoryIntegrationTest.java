@@ -1,4 +1,4 @@
-package com.blogengine.repository;
+package com.blogengine.blogger;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
@@ -14,7 +14,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.blogengine.domain.Blogger;
+import com.blogengine.blogger.Blogger;
+import com.blogengine.blogger.BloggerRepository;
 
 
 @RunWith(SpringRunner.class)

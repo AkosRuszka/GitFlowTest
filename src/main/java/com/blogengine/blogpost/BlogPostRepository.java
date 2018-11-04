@@ -1,12 +1,12 @@
-package com.blogengine.repository;
+package com.blogengine.blogpost;
 
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
-import com.blogengine.domain.BlogPost;
 
 @Repository
 public interface BlogPostRepository extends CrudRepository<BlogPost, Long> {
@@ -23,6 +23,9 @@ public interface BlogPostRepository extends CrudRepository<BlogPost, Long> {
 	 * */
 	public Optional<BlogPost> findFirst1ByTitle(String title);
 
+	@Query(value="Select * from blog_post where title like CONCAT('%',:title,'%')",nativeQuery=true)
+	public List<BlogPost> findByTitle(@Param("title") String title);
+	
 	/** 
 	 * Visszaadja azokat a BlogPostokat, amelyeknek a létrehozási dátuma
 	 * megegyezik a paraméterben szereplő dátummal.

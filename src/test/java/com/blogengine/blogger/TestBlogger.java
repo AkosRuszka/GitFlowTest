@@ -1,4 +1,4 @@
-package com.blogengine.domain;
+package com.blogengine.blogger;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,6 +7,8 @@ import java.time.format.DateTimeFormatter;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.blogengine.blogger.Blogger;
 
 public class TestBlogger {
 

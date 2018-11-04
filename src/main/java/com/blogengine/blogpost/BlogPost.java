@@ -1,4 +1,4 @@
-package com.blogengine.domain;
+package com.blogengine.blogpost;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,7 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.blogengine.blogger.Blogger;
+import com.blogengine.comment.Comment;
 
 @Entity
 public class BlogPost {
@@ -37,9 +38,9 @@ public class BlogPost {
 	@OneToMany(mappedBy="blog")
 	private List<Comment> comments;
 	
-	protected BlogPost() { /* empty for hibernate */ }
+	public BlogPost() { /* empty for hibernate */ }
 	
-	public BlogPost(Blogger author, String title, String content) throws Exception {
+	public BlogPost(Blogger author, String title, String content) throws IllegalArgumentException {
 		this.author = author;
 		this.setTitle(title);
 		this.setContent(content);
@@ -66,7 +67,7 @@ public class BlogPost {
 	public String getTitle() {
 		return title;
 	}
-	public void setTitle(String title) throws Exception{
+	public void setTitle(String title) throws IllegalArgumentException{
 		if(title.isEmpty()) {
 			throw new IllegalArgumentException("Nem lehet üres a cím!");
 		}
@@ -77,7 +78,7 @@ public class BlogPost {
 		return content;
 	}
 
-	public void setContent(String content) throws Exception{
+	public void setContent(String content) throws IllegalArgumentException{
 		if(content.isEmpty()) {
 			throw new IllegalArgumentException("Nem lehet üres a tartalom!");
 		}

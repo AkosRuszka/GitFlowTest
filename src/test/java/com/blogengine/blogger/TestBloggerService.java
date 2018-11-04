@@ -1,4 +1,4 @@
-package com.blogengine.service;
+package com.blogengine.blogger;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -10,8 +10,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.blogengine.domain.Blogger;
-import com.blogengine.repository.BloggerRepository;
+import com.blogengine.blogger.Blogger;
+import com.blogengine.blogger.BloggerRepository;
+import com.blogengine.blogger.BloggerService;
 
 public class TestBloggerService {
 

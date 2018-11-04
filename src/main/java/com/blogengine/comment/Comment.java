@@ -1,4 +1,4 @@
-package com.blogengine.domain;
+package com.blogengine.comment;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.blogengine.blogger.Blogger;
+import com.blogengine.blogpost.BlogPost;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
