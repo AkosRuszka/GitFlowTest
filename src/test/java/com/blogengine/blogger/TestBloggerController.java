@@ -34,7 +34,7 @@ public class TestBloggerController {
 	
 	@Test
 	public void testBloggerList() throws Exception {
-		String URL = "/api/bloggers";
+		String URL = "/bloggers";
 		
 		Blogger blogger = new Blogger("Test","Test",(short)20,"TestUserName","valami@gmail.com");
 		
