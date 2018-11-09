@@ -43,8 +43,8 @@ public class BloggerRepositoryIntegrationTest {
 		entityManager.persist(bl3);
 		
 		/* a data.sql fájl lefutása után a benne szereplő 3 blogger már a listában lesz */
-		Blogger bl1 = new Blogger("Vezeto","Peto",(short)23,"Kilimo","nagyagyu@mukodj.most");
-		
+		Blogger bl1 = new Blogger("Toyah","Marriott",(short)23,"Seanie","Acceptable@gmail.com");
+
 		entityManager.flush();
 		
 		List<Blogger> resultList = bloggerRepository.findAll();
