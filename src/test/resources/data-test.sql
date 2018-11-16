@@ -1,0 +1,2 @@
+insert into blogger values(1,23,0,'admin@gmail.com','Test','2018-10-10','Test','adminpass','2018-10-10','Test');
+insert into blogger values(2,23,0,'user@gmail.com','Test','2018-10-10','Test','pass','2018-10-10','Test');

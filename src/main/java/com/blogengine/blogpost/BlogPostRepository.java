@@ -23,6 +23,9 @@ public interface BlogPostRepository extends CrudRepository<BlogPost, Long> {
 	 * */
 	public Optional<BlogPost> findFirst1ByTitle(String title);
 
+	/** 
+	 * Cím szerinti egyezés
+	 * */
 	@Query(value="Select * from blog_post where title like CONCAT('%',:title,'%')",nativeQuery=true)
 	public List<BlogPost> findByTitle(@Param("title") String title);
 	
@@ -55,4 +58,5 @@ public interface BlogPostRepository extends CrudRepository<BlogPost, Long> {
 	 * (vagy null)
 	 * */	
 	public Optional<BlogPost> findById(Long id);
+	
 }

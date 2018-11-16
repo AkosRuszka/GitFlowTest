@@ -4,14 +4,23 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import com.blogengine.Role;
 import com.blogengine.blogpost.BlogPost;
 import com.blogengine.comment.Comment;
 import com.blogengine.validator.EmailValidator;
@@ -31,25 +40,41 @@ public class Blogger {
 	
 	private short age;
 	
-	@Column(length=50)
+	@Column(length=50, nullable=false)
 	private String userName;
 	
-	@Column(length=50)
+	@Column(length=50, nullable=false, unique=true)
 	private String emailAddress;
+	
+	@Column(nullable=false)
+	private String password;
 	
 	private short blogPostCounter;
 	
 	private String regDate;
 	private String lastActivityDate;
 	
-	@JsonBackReference
+	@JsonBackReference(value="blogposts")
 	@OneToMany(mappedBy = "author")
 	private List<BlogPost> blogposts;
 	
-	@JsonBackReference
+	@JsonBackReference(value="comments")
 	@OneToMany(mappedBy = "author")
 	private List<Comment> comments; 
 	
+	@JsonBackReference(value="roles")
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(
+			name = "users_roles",
+			joinColumns = {@JoinColumn(name="user_id")},
+			inverseJoinColumns = {@JoinColumn(name="role_id")}
+	)
+	private Set<Role> roles;
+	
+	@ElementCollection
+	@CollectionTable(name="Follows", joinColumns= @JoinColumn(name="ID"))
+	private List<Long> followedBlogPostsID;
+
 	public Blogger() { /* empty for hibernate */ }
 	
 	public Blogger(String lastName, String firstName, short age, String userName, String emailAddress) throws IllegalArgumentException {
@@ -162,6 +187,22 @@ public class Blogger {
 		this.blogposts = blogposts;
 	}
 	
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public List<Comment> getComments() {
 		return comments;
 	}
@@ -169,9 +210,21 @@ public class Blogger {
 		this.comments = comments;
 	}
 	
+	public void addComment(Comment comment) {
+		comments.add(comment);
+	}
+	
 	public void addBlogPost(String title, String content) throws IllegalArgumentException {
 		blogposts.add(new BlogPost(this,title,content));
 		blogPostCounter++;
+	}
+	
+	public List<Long> getFollowedBlogPostsID() {
+		return followedBlogPostsID;
+	}
+
+	public void setFollowedBlogPostsID(List<Long> followedBlogPostsID) {
+		this.followedBlogPostsID = followedBlogPostsID;
 	}
 
 	@Override
@@ -215,6 +268,10 @@ public class Blogger {
 			return true;
 		}
 		return false;
+	}
+
+	public void addFollowedBlogPost(Long blogpost_id) {
+		this.followedBlogPostsID.add(blogpost_id);		
 	}	
 	
 }

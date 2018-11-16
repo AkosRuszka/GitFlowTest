@@ -12,6 +12,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.context.TestComponent;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.blogengine.blogger.Blogger;
@@ -19,6 +23,7 @@ import com.blogengine.blogger.BloggerRepository;
 
 
 @RunWith(SpringRunner.class)
+@Sql("src/test/resources/data-test.sql")
 @DataJpaTest
 public class BloggerRepositoryIntegrationTest {
 
@@ -43,7 +48,7 @@ public class BloggerRepositoryIntegrationTest {
 		entityManager.persist(bl3);
 		
 		/* a data.sql fájl lefutása után a benne szereplő 3 blogger már a listában lesz */
-		Blogger bl1 = new Blogger("Toyah","Marriott",(short)23,"Seanie","Acceptable@gmail.com");
+		Blogger bl1 = new Blogger("Toyah","Marriott",(short)23,"Seanie","acceptable@gmail.com");
 
 		entityManager.flush();
 		

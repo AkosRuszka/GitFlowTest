@@ -29,4 +29,6 @@ public interface BloggerRepository extends CrudRepository<Blogger, Long> {
 	 * */
 	public Optional<Blogger> findFirst1ByUserName(String username);
 	
+	
+	public Blogger findByEmailAddress(String email);
 }

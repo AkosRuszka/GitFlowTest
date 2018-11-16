@@ -46,14 +46,14 @@ public class TestBloggerService {
 		 * A bs teszteli a filterrel az ID-t, null-t várunk, mivel az ID nem megfelelő 
 		 * */
 		when(br.findById((long)5)).thenReturn(Optional.of(test));
-		assertEquals(null, bs.findBloggerWithId((long)5));
+		assertEquals(null, bs.findById((long)5));
 		
 		
 		/* Második megközelítés, a br jó ID-s Bloggert ad vissza		
 		 * Az ID megfelelő, a filter elfogadja, visszaadja a Bloggert 
 		 * */
 		when(br.findById((long)10)).thenReturn(Optional.of(test));
-		assertEquals(true, bs.findBloggerWithId((long)10).equals((Blogger)test));		
+		assertEquals(true, bs.findById((long)10).equals((Blogger)test));		
 	}
 	
 	@Test
@@ -63,13 +63,13 @@ public class TestBloggerService {
 		 * a br-től kapott Bloggert
 		 * */
 		when(br.findFirst1ByUserName("Test")).thenReturn(Optional.of(test));
-		assertEquals(true, test.equals((Blogger)bs.findBloggerWithUserName("Test")));
+		assertEquals(true, test.equals((Blogger)bs.findByUserName("Test")));
 		
 		/* Itt a br a paraméterben szereplő névnek nem megfelelő
 		 * Objektummal tér vissza, így null-t kell visszaadnia a filter miatt
 		 *  */
 		when(br.findFirst1ByUserName("Testt")).thenReturn(Optional.of(test));
-		assertEquals(null, bs.findBloggerWithUserName("Testt"));
+		assertEquals(null, bs.findByUserName("Testt"));
 		
 	}
 	

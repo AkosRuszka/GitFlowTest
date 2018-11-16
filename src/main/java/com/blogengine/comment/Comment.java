@@ -34,13 +34,16 @@ public class Comment {
 	@Column(length=10)
 	private String date;
 	
+	private boolean moderated;
+	private String moderator;
+	
 	protected Comment() { /* empty for hibernate */ }
 	
 	public Comment(Blogger author, BlogPost blog, String content) throws Exception {
 		this.author = author;
 		this.blog = blog;
 		this.setContent(content);
-		date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm"));
 	}
 	
 	public Long getID() {
@@ -49,6 +52,22 @@ public class Comment {
 
 	public void setID(Long iD) {
 		ID = iD;
+	}
+	
+	public String getModerator() {
+		return moderator;
+	}
+
+	public void setModerator(String moderator) {
+		this.moderator = moderator;
+	}
+
+	public boolean isModerated() {
+		return moderated;
+	}
+
+	public void setModerated(boolean moderated) {
+		this.moderated = moderated;
 	}
 
 	public Blogger getAuthor() {
@@ -80,5 +99,9 @@ public class Comment {
 	}
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	public void moderated() {
+		moderated = true;
 	}
 }
