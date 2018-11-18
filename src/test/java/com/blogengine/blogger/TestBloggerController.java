@@ -1,6 +1,7 @@
 package com.blogengine.blogger;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -9,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +50,11 @@ public class TestBloggerController {
 //		.andExpect(jsonPath("$[0].userName", equalTo("TestUserName")));	
 //		
 //	}
+
+	@Test
+	public void tt() {
+		assertEquals(true, true);
+	}
 
 }
 

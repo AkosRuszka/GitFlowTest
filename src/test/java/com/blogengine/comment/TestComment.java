@@ -1,6 +1,7 @@
 package com.blogengine.comment;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -23,8 +24,8 @@ public class TestComment {
 		assertEquals(bl, cm.getAuthor());
 		assertEquals(bp, cm.getBlog());
 		
-		String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-		assertEquals(true, time.equals(cm.getDate()));
+		String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm"));
+		assertEquals(time, cm.getDate());
 		
 	}
 	

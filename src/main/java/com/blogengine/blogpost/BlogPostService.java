@@ -1,6 +1,5 @@
 package com.blogengine.blogpost;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -8,7 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.blogengine.Role;
+import com.blogengine.role.Role;
 import com.blogengine.blogger.Blogger;
 import com.blogengine.blogger.BloggerSaver;
 
@@ -47,21 +46,25 @@ public class BlogPostService implements BlogPostSaver{
 	
 	public BlogPost findById(Long id) {
 		return blogpostReposiroty.findById(id)
-				.filter(blogpost -> blogpost.getId().equals(id))
+				.filter(blogpost -> blogpost.getID().equals(id))
 				.orElse(null);
 	}
 
-	public Optional<BlogPost> save(ImperfectBlogPost imbp, String blogger_email) {
+	public BlogPost save(ImperfectBlogPost imbp, String authorEmail) {
 		
 		Optional<BlogPost> result = blogpostReposiroty.findFirst1ByTitle(imbp.getTitle());
-	
-		BlogPost bp = new BlogPost(bloggerSaver.findByEmail(blogger_email), imbp.getTitle(), imbp.getContent());
 		
 		if(result.isPresent()) {
-			return Optional.empty();
+			return null;
 		} else {
-			return Optional.of(blogpostReposiroty.save(bp));
+			
+			Blogger author = bloggerSaver.findByEmail(authorEmail);			
+			BlogPost newPost = new BlogPost(author, imbp.getTitle(), imbp.getContent());
+			
+			BlogPost savedPost = blogpostReposiroty.save(newPost); 
+			author.addBlogPost(savedPost);
 		}
+		return null;
 	}
 	
 	public BlogPost save(BlogPost bp) {
@@ -76,7 +79,7 @@ public class BlogPostService implements BlogPostSaver{
 		
 		// MEgnézi hogy fel van e már rá iratkozva
 		if(bp.isPresent()) {
-			List<Long> followers_id = bp.get().getFollowers();
+			List<Long> followers_id = bp.get().getFollowersBloggerID();
 			
 			if(followers_id.contains(blogger.getID())) {
 				return false;
@@ -93,7 +96,7 @@ public class BlogPostService implements BlogPostSaver{
 	
 	public void deleteById(Long id) {
 				
-		findById(id).getFollowers().forEach(blogger_id -> {
+		findById(id).getFollowersBloggerID().forEach(blogger_id -> {
 			bloggerSaver.findById(blogger_id).getFollowedBlogPostsID().remove(id);			
 		});
 		

@@ -24,7 +24,7 @@ public class TestBloggerService {
 	public void init() {
 		bs.setBr(br);
 		try {
-			test = new Blogger("Test","Test",(short)20,"Test","test@gmail.com");
+			test = new Blogger("Test","Test",(short)20,"Test","test@gmail.com","tesztjelszo");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

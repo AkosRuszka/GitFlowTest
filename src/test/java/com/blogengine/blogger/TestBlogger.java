@@ -1,7 +1,5 @@
 package com.blogengine.blogger;
 
-import static org.junit.Assert.assertEquals;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -9,97 +7,76 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.blogengine.blogger.Blogger;
+import com.blogengine.blogpost.BlogPost;
+
+import static org.junit.Assert.*;
 
 public class TestBlogger {
 
 	private static Blogger test1;
 	private static Blogger test2;
-	
-	@Test(expected=IllegalArgumentException.class)
-	public void testSetLastNameWithException() throws Exception {
-		test1.setLastName("");
-	}
-	
+
 	@Before
-	public void init() throws Exception {
-		test1 = new Blogger("Kis","Pista",(short)20,"A","a@gmail.com");
-		test2 = new Blogger("Kis","Jeno",(short)20,"B","b@gmail.com");
+	public void init() throws IllegalArgumentException {
+		test1 = new Blogger("Kis","Pista",(short)20,"A","a@gmail.com","Ajelszo");
+		test2 = new Blogger("Kis","Jeno",(short)20,"B","b@gmail.com","Bjelszo");
 	}
 	
 	@Test
-	public void testConstructor() throws Exception {
-		Blogger newBlogger = new Blogger("Kis","Pista",(short)20,"A","a@gmail.com");
+	public void testConstructor() throws IllegalArgumentException {
+		Blogger newBlogger = new Blogger("Kis","Pista",(short)20,"A","a@gmail.com","Ajelszo");
 		assertEquals(test1, newBlogger);
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void testSetFirstName() throws Exception {
-		test1.setFirstName("");
-	}
-	
-	@Test(expected=IllegalArgumentException.class)
 	public void testSetUserName() {
-		test1.setUserName("");
-	}
-	
-	@Test
-	public void testSetLastName() throws Exception {
-		test1.setLastName("Pacsma");
-		assertEquals("LastNameSetter ellenőrzés","Pacsma", test1.getLastName());
+		new Blogger("LastName","FirstName",(short)12,"","email@gmail.com","password");
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
-	public void testSetAgeWithException() throws Exception {
+	public void testSetAgeWithException() throws IllegalArgumentException {
 		test1.setAge((short) 2);
-	}
-	
-	@Test
-	public void testSetAge() throws Exception {
-		test1.setAge((short)30);
-		assertEquals((short)30, test1.getAge());
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testSetEmailWithBadFormat() {
-		test1.setEmailAddress("valami@gmail.");
+	    new Blogger("teszt","teszt",(short)12,"username","valami]gmail.","password");
 	}
 	
 	@Test(expected=IllegalArgumentException.class)
 	public void testSetEmailWithIllegalArgument() {
-		test1.setEmailAddress("");
+		new Blogger("teszt","teszt",(short)12,"username","","password");
 	}
 	
 	@Test
 	public void testBloggerEqual() {
 		//Nem egyenlő Username & Email
-		assertEquals(false,test1.equals(test2));
+        assertNotEquals(test1, test2);
 		
 		// Null összehasonlítás
-		assertEquals(false,test1.equals(null));
+        assertNotEquals(null, test1);
 		
 		// Ugyan azt az objektumot hasonlítjuk össze
-		assertEquals(true,test1.equals(test1));
+        assertEquals(test1, test1);
 		
 		// Más osztálybeli objektumot hasonlítunk össze
-		assertEquals(false,test1.equals((int)10));
+        assertNotEquals(test1, 10);
 		
 		// Egyenlő email & nem egyenlő név
-		String oldemail = test1.getEmailAddress();
-		test1.setEmailAddress(test2.getEmailAddress());
-		assertEquals(true,test1.equals(test2));
+		Blogger t1 = new Blogger("teszt1","teszt1",(short)20,"teszt1","teszt@gmail.com","tesztpass");
+		Blogger t2 = new Blogger("teszt2","teszt2",(short)20,"teszt2","teszt@gmail.com","tesztpass");
+        assertEquals(t1, t2);
 
 		// Egyenlő név & nem egyenlő email
-		test1.setEmailAddress(oldemail); // email visszaállíátsa
-		// Név átállítása 
-		test1.setUserName(test2.getUserName());
-		assertEquals(true,test1.equals(test2));
+        Blogger t3 = new Blogger("teszt3","teszt3",(short)20,"teszt2","mas@gmail.com","tesztpassz");
+        assertEquals(t2, t3);
 		
 	}
 	
 	@Test
-	public void testBlogPostCounter() throws Exception {
+	public void testBlogPostCounter() throws IllegalArgumentException {
 		assertEquals((long)0, (long)test1.getBlogPostCounter());
-		test1.addBlogPost("Valami cím", "Valami content");
+		test1.addBlogPost(new BlogPost(test1,"Valami cím", "Valami content"));
 		assertEquals((long)1, (long)test1.getBlogPostCounter());
 	}
 	
@@ -107,7 +84,8 @@ public class TestBlogger {
 	public void testRegDate() {
 		assertEquals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), test1.getRegDate());
 	}
-	
+
+	@Test
 	public void testLastActivityDate() {
 		assertEquals(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")), test1.getLastActivityDate());
 	}

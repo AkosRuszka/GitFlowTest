@@ -23,7 +23,9 @@ public class SecurityConf extends WebSecurityConfigurerAdapter {
 		.antMatchers("/comment").hasRole("USER")
 		.antMatchers(HttpMethod.GET, "/blogger/list").hasRole("ADMIN")
 		.antMatchers(HttpMethod.GET, "/blogger/profile").hasRole("USER")
+		.antMatchers(HttpMethod.GET, "/blogger/**").hasRole("USER")
 		.antMatchers(HttpMethod.PUT, "/blogger").hasRole("USER")
+		.antMatchers(HttpMethod.POST, "/blogger").permitAll()
 		.antMatchers(HttpMethod.DELETE, "/blogger/profile").hasRole("USER")
 		.antMatchers(HttpMethod.DELETE, "/blogger/**").hasRole("ADMIN")
 		.anyRequest().authenticated();		

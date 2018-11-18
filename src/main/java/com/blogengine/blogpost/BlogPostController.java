@@ -78,7 +78,7 @@ public class BlogPostController {
 			e.printStackTrace();
 		}
 		
-		return bps.save(bl,user.getUsername()).get();
+		return bps.save(bl,user.getUsername());
 	}	
 		
 	@PutMapping(consumes=MediaType.APPLICATION_JSON_VALUE)

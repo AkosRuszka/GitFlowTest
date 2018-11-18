@@ -8,7 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.blogengine.Role;
+import com.blogengine.role.Role;
 
 public class UserDetailsImpl implements UserDetails {
 	
@@ -23,7 +23,7 @@ public class UserDetailsImpl implements UserDetails {
 		Collection<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
 		Set<Role> roles = user.getRoles();
 		for(Role role: roles) {
-			authorities.add(new SimpleGrantedAuthority("ROLE_"+role.getRole()));
+			authorities.add(new SimpleGrantedAuthority(role.getRole()));
 		}
 		
 		return authorities;

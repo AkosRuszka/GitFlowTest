@@ -37,7 +37,7 @@ public class BloggerRepositoryIntegrationTest {
 	
 	@Before
 	public void init() throws Exception {
-		bl3 = new Blogger("Test1","Test1",(short)21,"Test1","test1@gmail.com");	
+		bl3 = new Blogger("Test1","Test1",(short)21,"Test1","test1@gmail.com","jelszo");	
 	}
 	
 	
@@ -48,7 +48,7 @@ public class BloggerRepositoryIntegrationTest {
 		entityManager.persist(bl3);
 		
 		/* a data.sql fájl lefutása után a benne szereplő 3 blogger már a listában lesz */
-		Blogger bl1 = new Blogger("Toyah","Marriott",(short)23,"Seanie","acceptable@gmail.com");
+		Blogger bl1 = new Blogger("Toyah","Marriott",(short)23,"Seanie","acceptable@gmail.com","valamijelszo");
 
 		entityManager.flush();
 		

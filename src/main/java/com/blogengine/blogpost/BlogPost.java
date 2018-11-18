@@ -18,35 +18,38 @@ import javax.persistence.OneToMany;
 
 import com.blogengine.blogger.Blogger;
 import com.blogengine.comment.Comment;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Setter;
 
 @Entity
+@NoArgsConstructor
 public class BlogPost {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Id
-	private Long ID;
+    @Getter @Setter private Long ID;
 	
 	@ManyToOne
-	private Blogger author;
+    @Getter @Setter private Blogger author;
 	
 	@Column(length=50)
-	private String title;
+    @Getter	private String title;
 	
 	@Column(columnDefinition="TEXT")
-	private String content;
+    @Getter private String content;
 	
 	@Column(length=10)
-	private String postedDate; 
+    @Getter @Setter private String postedDate;
 	
 	@OneToMany(mappedBy="blog")
-	private List<Comment> comments;
+    @Getter @Setter private List<Comment> comments;
 	
 	@ElementCollection
 	@CollectionTable(name="Followers", joinColumns= @JoinColumn(name="ID"))
-	private List<Long> followersBloggerID;
-	
-	public BlogPost() { /* empty for hibernate */ }
-	
-	public BlogPost(Blogger author, String title, String content) throws IllegalArgumentException {
+    @Getter @Setter private List<Long> followersBloggerID;
+
+	public BlogPost(@NonNull Blogger author,@NonNull String title,@NonNull String content) throws IllegalArgumentException {
 		this.author = author;
 		this.setTitle(title);
 		this.setContent(content);
@@ -54,77 +57,26 @@ public class BlogPost {
 		comments = new ArrayList<>();
 		followersBloggerID = new ArrayList<>();
 	}
-	
-	public Long getId() {
-		return ID;
-	}
 
-	public void setId(Long id) {
-		this.ID = id;
-	}
-
-	public Blogger getAuthor() {
-		return author;
-	}
-
-	public void setAuthor(Blogger author) {
-		this.author = author;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) throws IllegalArgumentException{
+	public void setTitle(@NonNull String title) throws IllegalArgumentException{
 		if(title.isEmpty()) {
 			throw new IllegalArgumentException("Nem lehet üres a cím!");
 		}
 		this.title = title;
 	}
-	
-	public String getContent() {
-		return content;
-	}
 
-	public void setContent(String content) throws IllegalArgumentException{
+	public void setContent(@NonNull String content) throws IllegalArgumentException{
 		if(content.isEmpty()) {
 			throw new IllegalArgumentException("Nem lehet üres a tartalom!");
 		}
 		this.content = content;
 	}
-
-	public String getPostedDate() {
-		return postedDate;
-	}
-
-	public void setPostedDate(String date) {
-		this.postedDate = date;
-	}
-
-	public List<Comment> getComments() {
-		return comments;
-	}
-
-	public void setComments(List<Comment> comments) {
-		this.comments = comments;
-	}
 	
-	public void addComment(Comment comment) {
+	public void addComment(@NonNull Comment comment) {
 		comments.add(comment);
 	}
 
-	public List<Long> getFollowersBloggerID() {
-		return followersBloggerID;
-	}
-
-	public void setFollowersBloggerID(List<Long> followersBloggerID) {
-		this.followersBloggerID = followersBloggerID;
-	}
-	
-	public List<Long> getFollowers() {
-		return this.followersBloggerID;
-	}
-
-	public void addFollower(Long blogger) {
-		this.followersBloggerID.add(blogger);
+	public void addFollower(@NonNull Long bloggerID) {
+		this.followersBloggerID.add(bloggerID);
 	}
 }

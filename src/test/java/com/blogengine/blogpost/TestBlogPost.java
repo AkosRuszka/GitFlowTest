@@ -21,7 +21,7 @@ public class TestBlogPost {
 		assertEquals("Content1", bp.getContent());
 		assertEquals(0, bp.getComments().size());
 		
-		String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+		String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm"));
 		
 		assertEquals(time, bp.getPostedDate());
 		
