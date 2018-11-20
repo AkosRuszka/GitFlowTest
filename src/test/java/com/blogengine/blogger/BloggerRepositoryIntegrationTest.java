@@ -23,7 +23,7 @@ import com.blogengine.blogger.BloggerRepository;
 
 
 @RunWith(SpringRunner.class)
-@Sql("src/test/resources/data-test.sql")
+//@Sql("resources/data-test.sql")
 @DataJpaTest
 public class BloggerRepositoryIntegrationTest {
 
@@ -36,13 +36,13 @@ public class BloggerRepositoryIntegrationTest {
 	Blogger bl3;
 	
 	@Before
-	public void init() throws Exception {
+	public void init(){
 		bl3 = new Blogger("Test1","Test1",(short)21,"Test1","test1@gmail.com","jelszo");	
 	}
 	
 	
 	@Test
-	public void findAllTest() throws Exception {
+	public void findAllTest() {
 
 		/* ezzel a bl3 a 3. helyre kerül be a blogger listában */
 		entityManager.persist(bl3);
@@ -50,15 +50,17 @@ public class BloggerRepositoryIntegrationTest {
 		/* a data.sql fájl lefutása után a benne szereplő 3 blogger már a listában lesz */
 		Blogger bl1 = new Blogger("Toyah","Marriott",(short)23,"Seanie","acceptable@gmail.com","valamijelszo");
 
+		entityManager.persist(bl1);
+
 		entityManager.flush();
 		
 		List<Blogger> resultList = bloggerRepository.findAll();
 		
-		assertThat(resultList.get(0), equalTo(bl1));
-		assertThat(resultList.get(3), equalTo(bl3));
-		
-		assertEquals(true, resultList.contains((Blogger)bl3));
-		assertEquals(true, resultList.contains((Blogger)bl1));
+		//assertThat(resultList.get(0), equalTo(bl1));
+		assertThat(resultList.get(2), equalTo(bl3));
+
+		assertTrue(resultList.contains(bl3));
+		assertTrue(resultList.contains(bl1));
 	}
 	
 	@Test

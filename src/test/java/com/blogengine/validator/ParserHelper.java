@@ -33,7 +33,6 @@ public class ParserHelper {
 		try {
 			rawJSON = (JSONObject) parser.parse(resultString);
 		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	
