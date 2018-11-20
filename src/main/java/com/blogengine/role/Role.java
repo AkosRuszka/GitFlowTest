@@ -1,5 +1,6 @@
 package com.blogengine.role;
 
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -33,5 +34,12 @@ public class Role {
 	public int hashCode() {
 		return role.hashCode();
 	}
-	
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Role role1 = (Role) o;
+		return Objects.equals(role, role1.role);
+	}
 }
